@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { 
   ArrowRight, 
   CheckCircle2, 
@@ -39,16 +39,16 @@ const Navbar = () => (
         <span className="font-bold text-2xl tracking-tight text-white">LOPSAN</span>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/70">
-        <a href="#problem" className="hover:text-white transition-colors">Problema</a>
-        <a href="#approach" className="hover:text-white transition-colors">Solución</a>
-        <a href="#roadmap" className="hover:text-white transition-colors">Roadmap</a>
-        <a href="#process" className="hover:text-white transition-colors">Proceso</a>
-        <a href="#team" className="hover:text-white transition-colors">Equipo</a>
-        <a href="#contact" className="hover:text-white transition-colors">Contacto</a>
+        <a href="#problem" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Problema</a>
+        <a href="#approach" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Solución</a>
+        <a href="#roadmap" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Roadmap</a>
+        <a href="#process" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Proceso</a>
+        <a href="#team" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Equipo</a>
+        <a href="#contact" className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-sm transition-colors">Contacto</a>
       </div>
       <a 
         href="#contact" 
-        className="bg-white text-brand-dark px-6 py-2.5 rounded-full text-sm font-bold hover:bg-white/90 transition-colors"
+        className="bg-white text-brand-dark px-6 py-2.5 rounded-full text-sm font-bold hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark transition-colors"
       >
         Agendar reunión
       </a>
@@ -56,10 +56,78 @@ const Navbar = () => (
   </nav>
 );
 
-const Hero = () => (
+const Hero = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
   <section className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-white px-6 pt-20 relative overflow-hidden bg-dot-grid">
-    <div className="absolute inset-0 bg-gradient-to-b from-brand-dark via-transparent to-brand-dark/50" />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-brand-accent/10 via-transparent to-transparent opacity-50" />
+    <div className="absolute inset-0 bg-linear-to-b from-brand-dark via-transparent to-brand-dark/50" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-brand-accent/10 via-transparent to-transparent opacity-50" />
+    <div className="md:hidden absolute inset-0 pointer-events-none">
+      <div className="absolute top-10 -left-20 w-72 h-72 rounded-full bg-brand-accent/10 blur-3xl" />
+      <div className="absolute bottom-8 -right-20 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
+    </div>
+    <div className="absolute inset-0 pointer-events-none">
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, -12, 0], x: [0, 6, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block absolute -top-20 -left-20 w-96 h-96 rounded-full bg-brand-accent/15 blur-3xl"
+      />
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, 10, 0], x: [0, -8, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block absolute top-1/3 -right-24 w-80 h-80 rounded-full bg-white/5 blur-3xl"
+      />
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, -8, 0], x: [0, 10, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block absolute -bottom-28 left-1/4 w-72 h-72 rounded-full bg-brand-accent/10 blur-3xl"
+      />
+
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { rotate: [0, 4, 0], opacity: [0.5, 0.8, 0.5] }}
+        transition={prefersReducedMotion ? undefined : { duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block absolute top-36 left-14 w-52 h-52 rounded-full border border-white/10"
+      />
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { rotate: [0, -6, 0], opacity: [0.6, 1, 0.6] }}
+        transition={prefersReducedMotion ? undefined : { duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden md:block absolute top-44 left-22 w-36 h-36 rounded-full border border-brand-accent/30"
+      />
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, -6, 0], rotate: [0, 3, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 17, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden lg:block absolute top-1/2 right-24 w-44 h-44 rounded-full border border-white/10"
+      />
+
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, -8, 0], x: [0, 4, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden lg:flex absolute top-36 right-20 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 items-center gap-3 backdrop-blur-sm"
+      >
+        <div className="w-8 h-8 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent">
+          <Database size={16} />
+        </div>
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Datos</p>
+          <p className="text-xs text-white/70">Operación centralizada</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        animate={prefersReducedMotion ? undefined : { y: [0, 9, 0], x: [0, -5, 0] }}
+        transition={prefersReducedMotion ? undefined : { duration: 13, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden lg:flex absolute bottom-40 left-20 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 items-center gap-3 backdrop-blur-sm"
+      >
+        <div className="w-8 h-8 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent">
+          <LineChart size={16} />
+        </div>
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">KPIs</p>
+          <p className="text-xs text-white/70">Visibilidad en tiempo real</p>
+        </div>
+      </motion.div>
+    </div>
     
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -76,15 +144,15 @@ const Hero = () => (
         De procesos manuales a una <span className="text-brand-accent">plataforma inteligente</span> de gestión operativa
       </h1>
       
-      <p className="text-lg md:text-xl text-white/50 leading-relaxed mb-12 max-w-4xl mx-auto">
+      <p className="text-lg md:text-xl text-white/65 leading-relaxed mb-12 max-w-4xl mx-auto">
         Diseñamos, construimos y evolucionamos sistemas operativos personalizados para empresas que gestionan maquinaria, activos y operaciones industriales.
       </p>
       
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-32">
-        <button className="bg-brand-accent text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-brand-accent/90 transition-all">
+        <button type="button" className="bg-brand-accent text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-brand-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark transition-all">
           Iniciar transformación digital <ArrowRight size={18} />
         </button>
-        <button className="bg-white text-brand-dark px-8 py-4 rounded-full font-bold hover:bg-white/90 transition-colors">
+        <button type="button" className="bg-white text-brand-dark px-8 py-4 rounded-full font-bold hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark transition-colors">
           Conocer el Roadmap
         </button>
       </div>
@@ -92,19 +160,124 @@ const Hero = () => (
 
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 text-[10px] font-bold tracking-widest uppercase">
       <span>Descubre más</span>
-      <ChevronDown size={16} className="animate-bounce" />
+      <ChevronDown size={16} className={prefersReducedMotion ? "" : "animate-bounce"} />
     </div>
   </section>
-);
+  );
+};
+
+const VisualOverviewSection = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+  <section className="py-24 px-6 bg-white border-y border-brand-ink/5">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-4">Visual del Negocio</h2>
+        <h3 className="text-3xl md:text-5xl font-medium tracking-tight text-brand-ink mb-6">
+          Qué hace LOPSAN, de forma simple
+        </h3>
+        <p className="text-brand-ink/60 max-w-2xl mx-auto">
+          Convertimos la operación diaria en un flujo digital visible para todo el equipo: desde la solicitud hasta la decisión ejecutiva.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-[1.2fr_1fr] gap-8 items-stretch">
+        <div className="bg-brand-bg rounded-3xl border border-brand-ink/5 p-8 md:p-10">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-brand-ink/50 mb-8">Flujo Operativo Digital</h4>
+          <div className="grid sm:grid-cols-5 gap-4 items-start">
+            {[
+              { label: "Solicitud", icon: <Phone size={20} /> },
+              { label: "Cotización", icon: <Search size={20} /> },
+              { label: "Asignación", icon: <Settings size={20} /> },
+              { label: "Seguimiento", icon: <Smartphone size={20} /> },
+              { label: "Control", icon: <LineChart size={20} /> }
+            ].map((step, i) => (
+              <motion.div
+                key={i}
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 14 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.45, delay: prefersReducedMotion ? 0 : i * 0.06, ease: "easeOut" }}
+                className="flex sm:block items-center gap-3 group transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 rounded-xl bg-white border border-brand-ink/5 text-brand-ink/60 flex items-center justify-center mx-auto transition-all duration-300 group-hover:text-brand-accent group-hover:border-brand-accent/30 group-hover:shadow-md">
+                  {step.icon}
+                </div>
+                <p className="text-xs font-bold text-brand-ink/60 mt-3 text-center w-full transition-colors duration-300 group-hover:text-brand-ink">{step.label}</p>
+                {i < 4 && (
+                  <div className="hidden sm:flex justify-center mt-3 text-brand-accent/60 transition-colors duration-300 group-hover:text-brand-accent">
+                    <ArrowRight size={14} />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mt-10">
+            {[
+              { title: "Activos", value: "100%", desc: "Visibilidad del inventario", icon: <ShieldCheck size={18} /> },
+              { title: "Procesos", value: "-40%", desc: "Menos tareas manuales", icon: <Cpu size={18} /> },
+              { title: "Decisiones", value: "Tiempo real", desc: "KPIs siempre actualizados", icon: <BarChart3 size={18} /> }
+            ].map((card, i) => (
+              <motion.div
+                key={i}
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 16 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.45, delay: prefersReducedMotion ? 0 : 0.12 + i * 0.08, ease: "easeOut" }}
+                className="group bg-white rounded-2xl border border-brand-ink/5 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-accent/10 hover:border-brand-accent/20"
+              >
+                <div className="w-8 h-8 rounded-lg bg-brand-bg text-brand-ink/60 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:text-brand-accent">
+                  {card.icon}
+                </div>
+                <p className="text-xs font-bold uppercase tracking-widest text-brand-ink/45 mb-2">{card.title}</p>
+                <p className="text-2xl font-bold text-brand-ink mb-1">{card.value}</p>
+                <p className="text-xs text-brand-ink/60">{card.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-brand-dark rounded-3xl p-8 md:p-10 text-white relative overflow-hidden bg-dot-grid">
+          <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-brand-accent/20 blur-3xl -translate-y-1/3 translate-x-1/3" />
+          <h4 className="text-sm font-bold uppercase tracking-widest text-white/60 mb-8 relative z-10">Lo que tu equipo ve</h4>
+
+          <div className="space-y-4 relative z-10">
+            {[
+              "Estado de cada equipo en un solo panel",
+              "Alertas de mantenimiento sin depender de memoria",
+              "Contratos, cotizaciones y rentas conectados",
+              "Indicadores claros para dirección y operaciones"
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={prefersReducedMotion ? undefined : { opacity: 0, x: 14 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : i * 0.07, ease: "easeOut" }}
+                className="group flex items-start gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-brand-accent/40 hover:-translate-y-0.5"
+              >
+                <CheckCircle2 size={16} className="text-brand-accent mt-0.5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                <p className="text-sm text-white/70 leading-relaxed transition-colors duration-300 group-hover:text-white/85">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  );
+};
 
 const ProblemSection = () => (
   <section id="problem" className="py-32 px-6 bg-brand-bg">
     <div className="max-w-7xl mx-auto text-center">
-      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/40 mb-6">La Realidad Actual</h2>
+      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">La Realidad Actual</h2>
       <h3 className="text-4xl md:text-6xl font-medium tracking-tight text-brand-ink mb-8">
         El costo de operar sin estructura
       </h3>
-      <p className="text-lg text-brand-ink/50 mb-20 max-w-2xl mx-auto">
+      <p className="text-lg text-brand-ink/60 mb-20 max-w-2xl mx-auto">
         Muchas empresas tradicionales operan con herramientas desconectadas que limitan su crecimiento y eficiencia operativa.
       </p>
       
@@ -127,11 +300,11 @@ const ProblemSection = () => (
           }
         ].map((item, i) => (
           <div key={i} className="bg-white p-12 rounded-3xl border border-brand-ink/5 shadow-sm text-left group hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-brand-bg rounded-xl flex items-center justify-center mb-8 text-brand-ink/30 group-hover:text-brand-accent transition-colors">
+            <div className="w-12 h-12 bg-brand-bg rounded-xl flex items-center justify-center mb-8 text-brand-ink/45 group-hover:text-brand-accent transition-colors">
               {item.icon}
             </div>
             <h4 className="text-2xl font-bold mb-4">{item.title}</h4>
-            <p className="text-brand-ink/50 leading-relaxed">{item.desc}</p>
+            <p className="text-brand-ink/60 leading-relaxed">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -141,13 +314,13 @@ const ProblemSection = () => (
 
 const ApproachSection = () => (
   <section id="approach" className="py-32 px-6 bg-brand-dark text-white relative overflow-hidden bg-dot-grid">
-    <div className="absolute inset-0 bg-gradient-to-b from-brand-dark via-transparent to-brand-dark" />
+    <div className="absolute inset-0 bg-linear-to-b from-brand-dark via-transparent to-brand-dark" />
     <div className="max-w-7xl mx-auto text-center relative z-10">
-      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-6">El Enfoque LOPSAN</h2>
+      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-6">El Enfoque LOPSAN</h2>
       <h3 className="text-4xl md:text-6xl font-medium tracking-tight mb-8">
         Tres pilares de transformación
       </h3>
-      <p className="text-lg text-white/40 mb-20 max-w-2xl mx-auto">
+      <p className="text-lg text-white/60 mb-20 max-w-2xl mx-auto">
         No vendemos software genérico. Diseñamos y construimos sistemas operativos a la medida de cada negocio.
       </p>
 
@@ -185,7 +358,7 @@ const ApproachSection = () => (
             <p className="text-brand-accent text-sm font-medium mb-8">{pillar.subtitle}</p>
             <ul className="space-y-4">
               {pillar.items.map((item, j) => (
-                <li key={j} className="flex items-start gap-3 text-sm text-white/50">
+                <li key={j} className="flex items-start gap-3 text-sm text-white/65">
                   <span className="w-1.5 h-1.5 rounded-full bg-brand-accent mt-1.5 shrink-0" />
                   {item}
                 </li>
@@ -243,9 +416,9 @@ const RoadmapSection = () => {
     <section id="roadmap" className="py-32 px-6 bg-brand-bg">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/40 mb-6">Metodología</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Metodología</h2>
           <h3 className="text-4xl md:text-6xl font-medium tracking-tight mb-8">Roadmap de Transformación</h3>
-          <p className="text-lg text-brand-ink/50 max-w-2xl mx-auto">
+          <p className="text-lg text-brand-ink/60 max-w-2xl mx-auto">
             Un modelo por fases que garantiza resultados progresivos y un camino claro hacia la transformación completa.
           </p>
         </div>
@@ -255,11 +428,12 @@ const RoadmapSection = () => {
             {phases.map((phase, i) => (
               <button 
                 key={i}
+                type="button"
                 onClick={() => setActivePhase(i)}
                 className={`w-full flex items-center justify-between p-6 rounded-2xl border transition-all text-left ${
                   activePhase === i 
-                    ? "bg-brand-dark border-brand-dark text-white shadow-lg" 
-                    : "bg-white border-brand-ink/5 text-brand-ink/40 hover:border-brand-ink/20"
+                    ? "bg-brand-dark border-brand-dark text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg" 
+                    : "bg-white border-brand-ink/5 text-brand-ink/55 hover:border-brand-ink/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
                 }`}
               >
                 <div className="flex items-center gap-4">
@@ -275,7 +449,7 @@ const RoadmapSection = () => {
             key={activePhase}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white p-12 rounded-3xl border border-brand-ink/5 shadow-sm min-h-[500px]"
+            className="bg-white p-12 rounded-3xl border border-brand-ink/5 shadow-sm min-h-125"
           >
             <div className="flex items-center gap-6 mb-10">
               <div className="w-16 h-16 bg-brand-dark rounded-2xl flex items-center justify-center text-white">
@@ -326,9 +500,9 @@ const RoadmapSection = () => {
 const ComparisonSection = () => (
   <section className="py-32 px-6 bg-brand-bg">
     <div className="max-w-7xl mx-auto text-center">
-      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/40 mb-6">Transformación</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Transformación</h2>
       <h3 className="text-4xl md:text-6xl font-medium tracking-tight mb-8">Antes vs Después</h3>
-      <p className="text-lg text-brand-ink/50 mb-20 max-w-2xl mx-auto">
+      <p className="text-lg text-brand-ink/60 mb-20 max-w-2xl mx-auto">
         El contraste entre la operación tradicional y la operación transformada con LOPSAN.
       </p>
 
@@ -339,7 +513,7 @@ const ComparisonSection = () => (
           className="bg-white/50 border border-brand-ink/5 p-12 rounded-3xl text-left cursor-default"
         >
           <div className="flex items-center gap-4 mb-12">
-            <div className="w-10 h-10 bg-brand-ink/10 rounded-full flex items-center justify-center text-brand-ink/40">
+            <div className="w-10 h-10 bg-brand-ink/10 rounded-full flex items-center justify-center text-brand-ink/55">
               <X size={20} />
             </div>
             <h4 className="text-2xl font-bold">Realidad Tradicional</h4>
@@ -352,7 +526,7 @@ const ComparisonSection = () => (
               "Baja visibilidad de activos e ingresos",
               "Operación reactiva"
             ].map((text, i) => (
-              <li key={i} className="flex items-center gap-4 text-brand-ink/40 text-sm">
+              <li key={i} className="flex items-center gap-4 text-brand-ink/55 text-sm">
                 <div className="w-6 h-6 bg-brand-ink/5 rounded-full flex items-center justify-center shrink-0">
                   <X size={12} />
                 </div>
@@ -399,9 +573,9 @@ const ComparisonSection = () => (
 const ProcessSection = () => (
   <section id="process" className="py-32 px-6 bg-white">
     <div className="max-w-7xl mx-auto text-center">
-      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/40 mb-6">Cómo Trabajamos</h2>
+      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Cómo Trabajamos</h2>
       <h3 className="text-4xl md:text-6xl font-medium tracking-tight mb-8">Un proceso claro y estructurado</h3>
-      <p className="text-lg text-brand-ink/50 mb-24 max-w-2xl mx-auto">
+      <p className="text-lg text-brand-ink/60 mb-24 max-w-2xl mx-auto">
         LOPSAN no entrega software — construye relaciones tecnológicas de largo plazo.
       </p>
 
@@ -440,7 +614,7 @@ const ProcessSection = () => (
             <h4 className="text-2xl font-bold mb-8">{step.title}</h4>
             <ul className="space-y-4">
               {step.items.map((item, j) => (
-                <li key={j} className="text-sm text-brand-ink/40">{item}</li>
+                <li key={j} className="text-sm text-brand-ink/55">{item}</li>
               ))}
             </ul>
           </motion.div>
@@ -452,11 +626,11 @@ const ProcessSection = () => (
 
 const TeamSection = () => (
   <section id="team" className="py-32 px-6 bg-brand-dark text-white relative overflow-hidden bg-dot-grid">
-    <div className="absolute inset-0 bg-gradient-to-b from-brand-dark via-transparent to-brand-dark" />
+    <div className="absolute inset-0 bg-linear-to-b from-brand-dark via-transparent to-brand-dark" />
     <div className="max-w-7xl mx-auto text-center relative z-10">
-      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-6">Equipo</h2>
+      <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/60 mb-6">Equipo</h2>
       <h3 className="text-4xl md:text-6xl font-medium tracking-tight mb-8">Expertos en transformación</h3>
-      <p className="text-lg text-white/40 mb-24 max-w-3xl mx-auto">
+      <p className="text-lg text-white/60 mb-24 max-w-3xl mx-auto">
         Combinamos estrategia operativa, ejecución tecnológica e inteligencia de negocios para transformar operaciones tradicionales en plataformas inteligentes.
       </p>
 
@@ -499,32 +673,32 @@ const ContactSection = () => (
     <div className="max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-[1fr_500px] gap-20 items-start">
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/40 mb-6">Contacto</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Contacto</h2>
           <h3 className="text-4xl md:text-6xl font-medium tracking-tight text-brand-ink mb-8 leading-tight">
             La transformación <br />
             comienza con una <br />
             <span className="text-brand-accent">decisión estratégica</span>
           </h3>
-          <p className="text-xl text-brand-ink/50 mb-12 max-w-xl">
+          <p className="text-xl text-brand-ink/60 mb-12 max-w-xl">
             Agenda una reunión estratégica para evaluar cómo podemos transformar tu operación en una plataforma digital inteligente.
           </p>
 
           <div className="space-y-8 mb-16">
             <div className="flex items-center gap-6">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/30 shadow-sm border border-brand-ink/5">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
                 <Mail size={20} />
               </div>
               <div>
-                <div className="text-xs font-bold text-brand-ink/30 uppercase tracking-widest mb-1">Email</div>
+                <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Email</div>
                 <div className="font-bold">contacto@lopsan.mx</div>
               </div>
             </div>
             <div className="flex items-center gap-6">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/30 shadow-sm border border-brand-ink/5">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
                 <MapPin size={20} />
               </div>
               <div>
-                <div className="text-xs font-bold text-brand-ink/30 uppercase tracking-widest mb-1">Ubicación</div>
+                <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Ubicación</div>
                 <div className="font-bold">Monterrey, México</div>
               </div>
             </div>
@@ -532,7 +706,7 @@ const ContactSection = () => (
 
           <div className="bg-white p-8 rounded-3xl border border-brand-ink/5 shadow-sm max-w-md">
             <h4 className="font-bold mb-4">¿Por qué agendar?</h4>
-            <p className="text-sm text-brand-ink/50 leading-relaxed">
+            <p className="text-sm text-brand-ink/60 leading-relaxed">
               Una sesión inicial sin compromiso para entender tu operación actual, identificar oportunidades de mejora y explorar si LOPSAN es el partner tecnológico adecuado para tu empresa.
             </p>
           </div>
@@ -543,49 +717,54 @@ const ContactSection = () => (
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">Nombre completo</label>
+                <label htmlFor="fullName" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Nombre completo</label>
                 <input 
+                  id="fullName"
                   type="text" 
                   placeholder="Tu nombre" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent transition-colors"
+                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">Empresa</label>
+                <label htmlFor="company" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Empresa</label>
                 <input 
+                  id="company"
                   type="text" 
                   placeholder="Nombre de tu empresa" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent transition-colors"
+                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
                 />
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">Email</label>
+                <label htmlFor="email" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Email</label>
                 <input 
+                  id="email"
                   type="email" 
                   placeholder="tu@email.com" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent transition-colors"
+                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">Teléfono</label>
+                <label htmlFor="phone" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Teléfono</label>
                 <input 
+                  id="phone"
                   type="tel" 
                   placeholder="+52 (81) 0000-0000" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent transition-colors"
+                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-brand-ink/40 uppercase tracking-widest">¿Cómo podemos ayudarte?</label>
+              <label htmlFor="help" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">¿Cómo podemos ayudarte?</label>
               <textarea 
+                id="help"
                 placeholder="Cuéntanos brevemente sobre tu operación actual y los desafíos que enfrentas..." 
                 rows={4}
-                className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent transition-colors resize-none"
+                className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors resize-none"
               />
             </div>
-            <button className="w-full bg-brand-dark text-white font-bold py-5 rounded-xl hover:bg-brand-dark/90 transition-all flex items-center justify-center gap-2 group">
+            <button type="submit" className="w-full bg-brand-dark text-white font-bold py-5 rounded-xl hover:bg-brand-dark/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-all flex items-center justify-center gap-2 group">
               Iniciar transformación digital <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
@@ -601,12 +780,12 @@ const Footer = () => (
       <div className="flex items-center gap-2">
         <span className="font-bold text-xl tracking-tight">LOPSAN</span>
       </div>
-      <div className="text-sm text-brand-ink/30">
+      <div className="text-sm text-brand-ink/45">
         © {new Date().getFullYear()} LOPSAN. Transformación Digital Operativa.
       </div>
-      <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-brand-ink/40">
-        <a href="#" className="hover:text-brand-accent transition-colors">LinkedIn</a>
-        <a href="#" className="hover:text-brand-accent transition-colors">Privacidad</a>
+      <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-brand-ink/50">
+        <a href="#" className="hover:text-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors">LinkedIn</a>
+        <a href="#" className="hover:text-brand-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-sm transition-colors">Privacidad</a>
       </div>
     </div>
   </footer>
@@ -618,6 +797,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <VisualOverviewSection />
         <ProblemSection />
         <ApproachSection />
         <RoadmapSection />
