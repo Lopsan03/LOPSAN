@@ -26,9 +26,11 @@ import {
   Code,
   TrendingUp,
   Target,
-  Phone
+  Phone,
+  MessageCircle
 } from "lucide-react";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import emailjs from "@emailjs/browser";
 
 // --- Components ---
 
@@ -668,111 +670,231 @@ const TeamSection = () => (
   </section>
 );
 
-const ContactSection = () => (
-  <section id="contact" className="py-32 px-6 bg-brand-bg">
-    <div className="max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-[1fr_500px] gap-20 items-start">
-        <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Contacto</h2>
-          <h3 className="text-4xl md:text-6xl font-medium tracking-tight text-brand-ink mb-8 leading-tight">
-            La transformación <br />
-            comienza con una <br />
-            <span className="text-brand-accent">decisión estratégica</span>
-          </h3>
-          <p className="text-xl text-brand-ink/60 mb-12 max-w-xl">
-            Agenda una reunión estratégica para evaluar cómo podemos transformar tu operación en una plataforma digital inteligente.
-          </p>
+const EMAILJS_SERVICE_ID = "service_qx0z97v";
+const EMAILJS_TEMPLATE_ID = "template_c3qd13s";
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const WHATSAPP_NUMBER = "528122363986";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola LOPSAN, me gustaría agendar una reunión estratégica.")}`;
 
-          <div className="space-y-8 mb-16">
-            <div className="flex items-center gap-6">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
-                <Mail size={20} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Email</div>
-                <div className="font-bold">contacto@lopsan.mx</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
-                <MapPin size={20} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Ubicación</div>
-                <div className="font-bold">Monterrey, México</div>
-              </div>
-            </div>
-          </div>
+type ContactFormData = {
+  fullName: string;
+  company: string;
+  email: string;
+  phone: string;
+  message: string;
+};
 
-          <div className="bg-white p-8 rounded-3xl border border-brand-ink/5 shadow-sm max-w-md">
-            <h4 className="font-bold mb-4">¿Por qué agendar?</h4>
-            <p className="text-sm text-brand-ink/60 leading-relaxed">
-              Una sesión inicial sin compromiso para entender tu operación actual, identificar oportunidades de mejora y explorar si LOPSAN es el partner tecnológico adecuado para tu empresa.
+const ContactSection = () => {
+  const [formData, setFormData] = useState<ContactFormData>({
+    fullName: "",
+    company: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<"idle" | "success" | "error">("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (submitState !== "idle") {
+      setSubmitState("idle");
+      setSubmitMessage("");
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!EMAILJS_PUBLIC_KEY) {
+      setSubmitState("error");
+      setSubmitMessage("Falta configurar VITE_EMAILJS_PUBLIC_KEY en el entorno.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitState("idle");
+    setSubmitMessage("");
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.fullName,
+          from_email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          service: "Consulta estratégica",
+          message: formData.message,
+          reply_to: formData.email,
+          sent_at: new Date().toLocaleString("es-MX", {
+            dateStyle: "full",
+            timeStyle: "short",
+          }),
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      setSubmitState("success");
+      setSubmitMessage("Gracias. Recibimos tu mensaje y te contactaremos pronto.");
+      setFormData({
+        fullName: "",
+        company: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch {
+      setSubmitState("error");
+      setSubmitMessage("No se pudo enviar el mensaje. Inténtalo nuevamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section id="contact" className="py-32 px-6 bg-brand-bg">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1fr_500px] gap-20 items-start">
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-ink/50 mb-6">Contacto</h2>
+            <h3 className="text-4xl md:text-6xl font-medium tracking-tight text-brand-ink mb-8 leading-tight">
+              La transformación <br />
+              comienza con una <br />
+              <span className="text-brand-accent">decisión estratégica</span>
+            </h3>
+            <p className="text-xl text-brand-ink/60 mb-12 max-w-xl">
+              Agenda una reunión estratégica para evaluar cómo podemos transformar tu operación en una plataforma digital inteligente.
             </p>
-          </div>
-        </div>
 
-        <div className="bg-white p-12 rounded-3xl border border-brand-ink/5 shadow-xl">
-          <h4 className="text-2xl font-bold mb-10">Agendar reunión estratégica</h4>
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="fullName" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Nombre completo</label>
-                <input 
-                  id="fullName"
-                  type="text" 
-                  placeholder="Tu nombre" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
-                />
+            <div className="space-y-8 mb-16">
+              <div className="flex items-center gap-6">
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
+                  <Mail size={20} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Email</div>
+                  <div className="font-bold">contacto@lopsan.mx</div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label htmlFor="company" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Empresa</label>
-                <input 
-                  id="company"
-                  type="text" 
-                  placeholder="Nombre de tu empresa" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
-                />
+              <div className="flex items-center gap-6">
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-brand-ink/45 shadow-sm border border-brand-ink/5">
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-brand-ink/45 uppercase tracking-widest mb-1">Ubicación</div>
+                  <div className="font-bold">Monterrey, México</div>
+                </div>
               </div>
             </div>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Email</label>
-                <input 
-                  id="email"
-                  type="email" 
-                  placeholder="tu@email.com" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
-                />
+
+            <div className="bg-white p-8 rounded-3xl border border-brand-ink/5 shadow-sm max-w-md">
+              <h4 className="font-bold mb-4">¿Por qué agendar?</h4>
+              <p className="text-sm text-brand-ink/60 leading-relaxed">
+                Una sesión inicial sin compromiso para entender tu operación actual, identificar oportunidades de mejora y explorar si LOPSAN es el partner tecnológico adecuado para tu empresa.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white p-12 rounded-3xl border border-brand-ink/5 shadow-xl">
+            <h4 className="text-2xl font-bold mb-10">Agendar reunión estratégica</h4>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="fullName" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Nombre completo</label>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    required
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="Tu nombre"
+                    className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="company" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Empresa</label>
+                  <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    required
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    placeholder="Nombre de tu empresa"
+                    className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
+                  />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="tu@email.com"
+                    className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Teléfono</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+52 (81) 0000-0000"
+                    className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
+                  />
+                </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="phone" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">Teléfono</label>
-                <input 
-                  id="phone"
-                  type="tel" 
-                  placeholder="+52 (81) 0000-0000" 
-                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors"
+                <label htmlFor="message" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">¿Cómo podemos ayudarte?</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Cuéntanos brevemente sobre tu operación actual y los desafíos que enfrentas..."
+                  rows={4}
+                  className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors resize-none"
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="help" className="text-xs font-bold text-brand-ink/50 uppercase tracking-widest">¿Cómo podemos ayudarte?</label>
-              <textarea 
-                id="help"
-                placeholder="Cuéntanos brevemente sobre tu operación actual y los desafíos que enfrentas..." 
-                rows={4}
-                className="w-full bg-brand-bg border border-brand-ink/5 rounded-xl px-6 py-4 focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent/40 transition-colors resize-none"
-              />
-            </div>
-            <button type="submit" className="w-full bg-brand-dark text-white font-bold py-5 rounded-xl hover:bg-brand-dark/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-all flex items-center justify-center gap-2 group">
-              Iniciar transformación digital <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-brand-dark text-white font-bold py-5 rounded-xl hover:bg-brand-dark/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Enviando..." : "Iniciar transformación digital"}
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+              {submitMessage && (
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className={`text-sm ${submitState === "success" ? "text-emerald-600" : "text-red-600"}`}
+                >
+                  {submitMessage}
+                </p>
+              )}
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Footer = () => (
   <footer className="py-12 px-6 border-t border-brand-ink/5 bg-white">
@@ -791,6 +913,19 @@ const Footer = () => (
   </footer>
 );
 
+const WhatsAppFloatingButton = () => (
+  <a
+    href={WHATSAPP_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contactar por WhatsApp"
+    className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-brand-accent px-4 py-3 text-sm font-bold text-white shadow-lg transition-all hover:bg-brand-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+  >
+    <MessageCircle size={18} />
+    <span className="hidden sm:inline">WhatsApp</span>
+  </a>
+);
+
 export default function App() {
   return (
     <div className="min-h-screen selection:bg-brand-accent selection:text-white">
@@ -807,6 +942,7 @@ export default function App() {
         <ContactSection />
       </main>
       <Footer />
+      <WhatsAppFloatingButton />
     </div>
   );
 }
